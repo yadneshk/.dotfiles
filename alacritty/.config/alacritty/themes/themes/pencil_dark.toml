@@ -1,0 +1,28 @@
+# Colors (Pencil Dark)
+
+# Default Colors
+[colors.primary]
+background = '#181818'
+foreground = '#f1f1f1'
+
+# Normal colors
+[colors.normal]
+black   = '#212121'
+red     = '#ed1515'
+green   = '#11d116'
+yellow  = '#f67400'
+blue    = '#1d99f3'
+magenta = '#9b59b6'
+cyan    = '#1abc9c'
+white   = '#fcfcfc'
+
+# Bright colors
+[colors.bright]
+black   = '#818181'
+red     = '#c0392b'
+green   = '#5fd7af'
+yellow  = '#f3e430'
+blue    = '#20bbfc'
+magenta = '#6855de'
+cyan    = '#4fb8cc'
+white   = '#f1f1f1'
