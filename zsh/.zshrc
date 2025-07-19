@@ -93,7 +93,7 @@ alias azcli="source /home/ykulkarn/code/go/src/github.com/Azure/ARO-RP/pyenv/bin
 alias azcluster-creds="get_cluster_credentials"
 alias arohcp="cd /home/ykulkarn/code/go/src/github.com/Azure/ARO-HCP"
 alias vimcfg="cd /home/ykulkarn/.config/nvim"
-alias ls='ls --color'
+alias ls='ls --color -ltr'
 alias vim="nvim"
 alias c="clear"
 alias k="kubectl"
@@ -110,6 +110,7 @@ export GOPATH="$HOME/code/go"; export GOROOT="$GOPATH/goroot"; export PATH="$GOP
 export PATH="$HOME/.pyenv/bin:$PATH"
 export FZF_CTRL_R_OPTS='--height 40% --layout=reverse --border'
 export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always --line-range :100 {}" --height 40% --layout=reverse --border'
+export XDG_CONFIG_HOME="$HOME/.config"
 
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
