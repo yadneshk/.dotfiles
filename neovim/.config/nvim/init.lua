@@ -15,6 +15,8 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 vim.opt.guicursor = "a:ver25"
+vim.opt.laststatus = 3
+vim.opt.splitkeep = "screen"
 
 -- validate that lazy is available
 if not pcall(require, "lazy") then

@@ -4,7 +4,7 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     vim.opt.laststatus = 3
-    vim.opt.winbar = "%=%m %f"
+    -- vim.opt.winbar = "%=%m %f [%y]"
     require("lualine").setup {
       options = {
         icons_enabled = true,

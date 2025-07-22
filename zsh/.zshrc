@@ -85,8 +85,8 @@ get_cluster_credentials() {
 alias rebase='git fetch origin main && git rebase origin/main'
 
 export PATH=$PATH:$GOPATH/bin
-#export EDITOR=vim
-#set EDITOR=vim
+export EDITOR=nvim
+export VISUAL=nvim
 #export OC_EDITOR=vim
 
 alias azcli="source /home/ykulkarn/code/go/src/github.com/Azure/ARO-RP/pyenv/bin/activate && starship toggle azure"
@@ -116,3 +116,4 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(fzf --zsh)"
 
+source ~/.azure_credentials.sh
