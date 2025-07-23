@@ -99,6 +99,15 @@ alias c="clear"
 alias k="kubectl"
 alias cat="bat"
 alias o="oc"
+alias ls='eza -a --icons=always'
+alias ll='eza -al --icons=always'
+alias lt='eza -a --tree --level=1 --icons=always'
+alias kittyconf="vim ~/.dotfiles/kitty/.config/kitty/kitty.conf"
+alias alacrittyconf="vim ~/.dotfiles/alacritty/.config/alacritty/alacritty.toml"
+alias tmuxconf="vim ~/.dotfiles/tmux/.config/tmux/tmux.conf"
+alias nvimconf="vim ~/.dotfiles/neovim/.config/nvim/init.lua"
+alias zshconf="vim ~/.dotfiles/zsh/.zshrc"
+alias starshipconf="vim ~/.dotfiles/starship/.config/starship/starship.toml"
 
 # Load the kubectl completion code for zsh[1] into the current shell
 source <(kubectl completion zsh)

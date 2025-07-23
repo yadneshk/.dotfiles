@@ -1,6 +1,7 @@
+#include current-theme.conf
 shell                       /usr/bin/zsh
 font_family                 JetBrainsMono Nerd Font
-font_size                   11
+font_size                   12
 bold_font                   auto
 italic_font                 auto
 bold_italic_font            auto
@@ -20,11 +21,28 @@ confirm_os_window_close     0
 # selection_background        none
 notify_on_cmd_finish        invisible
 sync_to_monitor yes
-copy_on_select yes
+allow_remote_control yes
+listen_on unix:/tmp/kitty
 
 # Animated cursor follows text
 cursor_trail                  1
+#cursor_trail_decay           0.1 0.4
+#cursor_trail_start_threshold 2
 cursor_shape                 beam
 
-include current-theme.conf
-# END_KITTY_THEME
+# Active tab
+active_tab_foreground   #ffffff
+active_tab_background   #f5a97f
+#active_tab_font_style   bold
+
+# Inactive tab
+inactive_tab_foreground #444444
+inactive_tab_background #999999
+#inactive_tab_font_style normal
+
+# Tab bar margin
+tab_bar_margin_color    #f5a97f
+
+tab_bar_style               powerline 
+tab_powerline_style         slanted 
+tab_bar_edge                bottom
