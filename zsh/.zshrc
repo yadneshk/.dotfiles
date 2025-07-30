@@ -92,6 +92,7 @@ export VISUAL=nvim
 alias azcli="source /home/ykulkarn/code/go/src/github.com/Azure/ARO-RP/pyenv/bin/activate"
 alias azcluster-creds="get_cluster_credentials"
 alias arohcp="cd /home/ykulkarn/code/go/src/github.com/Azure/ARO-HCP"
+alias arorp="cd /home/ykulkarn/code/go/src/github.com/Azure/ARO-RP"
 alias vimcfg="cd /home/ykulkarn/.config/nvim"
 alias ls='ls --color -ltr'
 alias vim="nvim"
@@ -99,6 +100,7 @@ alias c="clear"
 alias k="kubectl"
 alias cat="bat"
 alias o="oc"
+alias s="sudo"
 alias ls='eza -a --icons=always'
 alias ll='eza -al --icons=always'
 alias lt='eza -a --tree --level=1 --icons=always'
@@ -121,9 +123,15 @@ export FZF_CTRL_R_OPTS='--height 40% --layout=reverse --border'
 export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always --line-range :100 {}" --height 40% --layout=reverse --border'
 export XDG_CONFIG_HOME="$HOME/.config"
 export STARSHIP_CONFIG=$HOME/.dotfiles/starship/.config/starship/starship.toml
+export PATH=$PATH:$HOME/.npm-global/bin
 
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(fzf --zsh)"
 
-source ~/.azure_credentials.sh
+source ~/.azure_credentialsrc
+source ~/.clauderc
+
+if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
+  source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration
+fi

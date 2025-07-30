@@ -24,7 +24,7 @@ $python\
 $conda\
 [](fg:sapphire bg:lavender)\
 $time\
-[](fg:lavender)\
+[ ](fg:lavender)\
 $kubernetes\
 $azure\
 $line_break$character"""
@@ -160,13 +160,13 @@ vimcmd_visual_symbol = '[❮](bold fg:yellow)'
 
 [kubernetes]
 disabled = false
-format = '[[](fg:k8s_blue)[$symbol](fg:k8s_white bg:k8s_blue) $context [](fg:k8s_blue)(fg:k8s_white bg:k8s_blue)]($style)'
+format = '[[](fg:k8s_blue)[$symbol](fg:k8s_white bg:k8s_blue) $context[](fg:k8s_blue)(fg:k8s_white bg:k8s_blue)]($style)'
 style = "bg:k8s_blue fg:k8s_white"
 symbol = ""
 
 [azure]
 disabled = false
-format = ' [[](fg:azure_blue)[$symbol](fg:k8s_white bg:azure_blue) $subscription [](fg:azure_blue)(fg:k8s_white bg:k8s_blue)]($style)'
+format = ' [[](fg:azure_blue)[$symbol](fg:k8s_white bg:azure_blue)$subscription[](fg:azure_blue)(fg:k8s_white bg:k8s_blue)]($style)'
 symbol = '󰠅 '
 style = 'fg:k8s_white bg:azure_blue'
 
