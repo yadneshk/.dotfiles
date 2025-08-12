@@ -70,7 +70,7 @@ TRANSIENT_PROMPT_TRANSIENT_PROMPT=$'\n''%F{'$SEG_BG'}'\
 '%K{'$SEG_BG'}%F{'$SEG_FG'}'"$ICON"' %n %f%k'\
 '%F{'$SEG_BG'}%K{'$SEG2_BG'}'\
 '%F{'$SEG_FG'} '"$ICON_CLOCK"' %D{%H:%M} %f%k'\
-'%F{'$SEG2_BG'}%f'$'\n' 
+'%F{'$SEG2_BG'}%f'$'\n''❯ '
 get_cluster_credentials() {
     #if [[ -z "$RG" || -z "$NAME" ]]; then
     #    echo "Error: RG (resource group) and NAME (cluster name) must be set."
@@ -101,9 +101,9 @@ alias k="kubectl"
 alias cat="bat"
 alias o="oc"
 alias s="sudo"
-alias ls='eza -a --icons=always'
-alias ll='eza -al --icons=always'
-alias lt='eza -a --tree --level=1 --icons=always'
+alias ls='eza --icons=always'
+alias ll='eza -l --icons=always'
+alias lt='eza --tree --level=1 --icons=always'
 alias kittyconf="vim ~/.dotfiles/kitty/.config/kitty/kitty.conf"
 alias alacrittyconf="vim ~/.dotfiles/alacritty/.config/alacritty/alacritty.toml"
 alias tmuxconf="vim ~/.dotfiles/tmux/.config/tmux/tmux.conf"
@@ -124,6 +124,12 @@ export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always --line-ran
 export XDG_CONFIG_HOME="$HOME/.config"
 export STARSHIP_CONFIG=$HOME/.dotfiles/starship/.config/starship/starship.toml
 export PATH=$PATH:$HOME/.npm-global/bin
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#363A4F,bg:#24273A,spinner:#F4DBD6,hl:#ED8796 \
+--color=fg:#CAD3F5,header:#ED8796,info:#C6A0F6,pointer:#F4DBD6 \
+--color=marker:#B7BDF8,fg+:#CAD3F5,prompt:#C6A0F6,hl+:#ED8796 \
+--color=selected-bg:#494D64 \
+--color=border:#6E738D,label:#CAD3F5"
 
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
@@ -135,3 +141,4 @@ source ~/.clauderc
 if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
   source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration
 fi
+
