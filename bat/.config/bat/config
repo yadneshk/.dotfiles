@@ -1,0 +1,6 @@
+--color=always
+--italic-text=always
+--map-syntax ".ignore:Git Ignore"
+--paging=never
+--style="changes"
+--theme="Catppuccin Macchiato"

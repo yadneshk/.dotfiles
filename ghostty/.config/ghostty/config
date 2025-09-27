@@ -20,7 +20,8 @@
 # # The config file consists of simple key-value pairs,
 # # separated by equals signs.
 # font-family = Iosevka
-# window-padding-x = 2
+window-padding-x = 0 
+window-padding-y = 0
 #
 # # Spacing around the equals sign does not matter.
 # # All of these are identical:
@@ -41,9 +42,13 @@
 # # which is explained in the docs for that config option.
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
-theme = catppuccin-macchiato
-#font-family = "JetBrainsMono Nerd Font"
-#font-synthetic-style = false
+theme = Catppuccin Macchiato
+font-family = JetBrains Mono
+#font-family-bold = JetBrains Mono Bold
+#font-family-italic = JetBrains Mono Italic
+#font-family-bold-italic = JetBrains Mono Bold Italic
+#font-synthetic-style = bold
+#font-style = Bold
 font-size = 11
 
 window-theme = ghostty
@@ -65,5 +70,17 @@ shell-integration = zsh
 keybind = shift+enter=text:\n
 cursor-invert-fg-bg = true
 
+#custom-shader = "./shaders/cursor_blaze_tapered.glsl"
 #custom-shader = "./shaders/cursor_blaze.glsl"
+#custom-shader = "./shaders/sparks-from-fire.glsl"
+#custom-shader = "./shaders/cursor_blaze_no_trail.glsl"
+#custom-shader = "./shaders/cursor_frozen.glsl"
 custom-shader = "./shaders/cursor_smear.glsl"
+#custom-shader = "./shaders/cursor_smear_fade.glsl"
+custom-shader-animation = always
+copy-on-select = clipboard
+app-notifications = "no-clipboard-copy"
+
+selection-background = "#dc8a78"
+selection-foreground = "#24273A"
+split-divider-color = "#dc8a78"
