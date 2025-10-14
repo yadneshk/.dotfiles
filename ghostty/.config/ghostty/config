@@ -49,7 +49,7 @@ font-family = JetBrainsMono Nerd Font
 #font-family-bold-italic = JetBrains Mono Bold Italic
 #font-synthetic-style = bold
 #font-style = Bold
-font-size = 11.3
+font-size = 11
 
 window-theme = ghostty
 gtk-wide-tabs = false
@@ -84,3 +84,5 @@ app-notifications = "no-clipboard-copy"
 selection-background = "#dc8a78"
 selection-foreground = "#24273A"
 split-divider-color = "#dc8a78"
+adjust-cursor-thickness = 2
+cursor-style-blink = true
