@@ -84,5 +84,4 @@ app-notifications = "no-clipboard-copy"
 selection-background = "#dc8a78"
 selection-foreground = "#24273A"
 split-divider-color = "#dc8a78"
-adjust-cursor-thickness = 2
 cursor-style-blink = true
