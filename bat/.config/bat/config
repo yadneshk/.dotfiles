@@ -2,5 +2,5 @@
 --italic-text=always
 --map-syntax ".ignore:Git Ignore"
 --paging=never
---style="changes"
+--style="numbers,changes,header"
 --theme="Catppuccin Macchiato"

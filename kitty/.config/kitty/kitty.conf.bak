@@ -1,18 +1,13 @@
-# font_family      Victor Mono Medium
-# bold_font        Victor Mono Bold
-# italic_font      Victor Mono Medium Italic
-# bold_italic_font Victor Mono Bold Italic
-
-font_size                   11.0
+font_size                   11.3
 remember_window_size        yes
 initial_window_width        950
 initial_window_height       500
 cursor_blink_interval       0.5
 cursor_stop_blinking_after  0
-scrollback_lines            10000
+scrollback_lines            1000000
 scrollbar_track_opacity     0
 scrollbar_gap               1
-scrollbar_handle_color      foreground
+# scrollbar_handle_color      foreground
 enable_audio_bell           no
 hide_window_decorations     yes
 background_opacity          1
@@ -20,11 +15,14 @@ dynamic_background_opacity  yes
 confirm_os_window_close     0
 notify_on_cmd_finish        invisible
 copy_on_select              yes
-editor nvim
-
+editor                      nvim
+draw_minimal_borders        yes
+dynamic_background          yes
+disable_ligatures never
 # Animated cursor follows text
 cursor_trail                  1
 cursor_shape                 beam
+adjust_font_size 0
 
 #include current-theme.conf
 include Catppuccin-Macchiato.conf
@@ -32,7 +30,7 @@ include Catppuccin-Macchiato.conf
 
 # Remove outer padding
 window_padding_width 0
-window_border_width             0px
+window_border_width             1px
 
 # Tab customizations
 tab_bar_edge top
@@ -41,7 +39,7 @@ tab_powerline_style         slanted
 #tab_title_template          {title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}
 #tab_bar_style powerline
 #tab_powerline_style round
-tab_bar_background  none
+# tab_bar_background  none
 active_tab_font_style     bold
 inactive_tab_font_style normal
 
@@ -55,9 +53,15 @@ text_composition_strategy platform
 
 
 # BEGIN_KITTY_FONTS
-font_family      family="Adwaita Mono"
+font_family      family="JetBrainsMono Nerd Font"
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
 # END_KITTY_FONTS
 
+
+
+# BEGIN_KITTY_THEME
+# Tokyo Night Storm
+include current-theme.conf
+# END_KITTY_THEME
