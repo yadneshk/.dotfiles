@@ -119,7 +119,7 @@ compinit
 zinit cdreplay -q
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source ${HOME}/.dotfiles/zsh/.config/zsh/.p10k.zsh
 
 alias vim="nvim"
 alias c="clear"
