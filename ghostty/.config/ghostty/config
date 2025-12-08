@@ -11,7 +11,7 @@ window-colorspace = display-p3
 split-divider-color = #dc8a78
 
 # Colors
-theme = tokyo-night.conf
+theme = tokyo-night-storm.conf
 cursor-invert-fg-bg = true
 selection-background = #dc8a78
 selection-foreground = #24273A
@@ -26,6 +26,7 @@ font-family-bold-italic = "JetBrainsMono Nerd Font"
 # Linux
 gtk-wide-tabs = false
 linux-cgroup = always
+gtk-toolbar-style = flat
 
 # Cursor
 cursor-style = bar
