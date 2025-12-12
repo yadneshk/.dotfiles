@@ -108,10 +108,10 @@
     # taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
     # per_directory_history   # Oh My Zsh per-directory-history local/global indicator
     # cpu_arch              # CPU architecture
-    #time                  # current time
+    time                  # current time
     # =========================[ Line #2 ]=========================
     newline
-    time
+    #time
     # ip                    # ip address and bandwidth usage for a specified network interface
     # public_ip             # public IP address
     # proxy                 # system-wide http/https/ftp proxy
@@ -1815,8 +1815,8 @@
   #               typed after changing current working directory.
   typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=off
 
-  function p10k-on-post-prompt() { p10k display '1|empty_line'=hide '2/right/*'=show }
-  function p10k-on-pre-prompt()  { p10k display '1|empty_line'=show '2/right/*'=hide }
+  function p10k-on-post-prompt() { p10k display '1/right/*'=hide '1/left/*'=hide '1/right/time'=show '2/right/*'=hide }
+  function p10k-on-pre-prompt()  { p10k display '1/left/*'=show '2/right/*'=hide }
   # Instant prompt mode.
   #
   #   - off:     Disable instant prompt. Choose this if you've tried instant prompt and found
