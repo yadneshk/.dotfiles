@@ -86,6 +86,7 @@ export FZF_DEFAULT_OPTS="--highlight-line \
 --color=border:#6E738D,label:#CAD3F5"
 export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :100 {}'"
 export FZF_ALT_C_COMMAND='fd --color always --hidden --type d . '
+export FZF_ALT_C_OPTS="--preview 'eza -l -T -L 2 --group-directories-first --color=always --icons=always {}'"
 
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -98,9 +99,23 @@ zstyle ':completion:complete:*:options' sort true
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
 zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
-zstyle ":fzf-tab:complete:cd:*" fzf-preview "tree -L 2 -C \${realpath}"
-zstyle ':completion:*' fzf-search-display true 
+#zstyle ":fzf-tab:complete:cd:*" fzf-preview "tree -L 2 -C \${realpath}"
+zstyle ':completion:*' fzf-search-display true
+
+# General file preview for most commands (should come first)
+zstyle ':fzf-tab:complete:*:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; elif [[ -d $realpath ]]; then eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
+
+# Specific cd preview (more specific, comes after general)
 zstyle ":fzf-tab:complete:cd:*" fzf-preview "eza -l -T -L 2 --group-directories-first --color=always --icons=always \${realpath}"
+
+# Specific previews for common commands
+zstyle ':fzf-tab:complete:vim:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+zstyle ':fzf-tab:complete:nvim:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+zstyle ':fzf-tab:complete:cat:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+zstyle ':fzf-tab:complete:bat:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+zstyle ':fzf-tab:complete:less:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+zstyle ':fzf-tab:complete:ls:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; else eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
+zstyle ':fzf-tab:complete:eza:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; else eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
 
 #zstyle ':completion:*' matcher-list "" "m:{a-z}={A-Z}" "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=* l:|=*" 
 #zstyle ':completion:*' menu select=2

@@ -1550,7 +1550,7 @@
 
   # Azure account name color.
   typeset -g POWERLEVEL9K_AZURE_OTHER_FOREGROUND="#ffffff"
-  typeset -g POWERLEVEL9K_AZURE_OTHER_BACKGROUND="#74bbfb"
+  typeset -g POWERLEVEL9K_AZURE_OTHER_BACKGROUND="#069AF3"
   # Custom icon.
   # typeset -g POWERLEVEL9K_AZURE_OTHER_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
@@ -1815,7 +1815,7 @@
   #               typed after changing current working directory.
   typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=off
 
-  function p10k-on-post-prompt() { p10k display '1/right/*'=hide '1/left/*'=hide '1/right/time'=show '2/right/*'=hide }
+  function p10k-on-post-prompt() { p10k display '1/left/*'=hide '1/right/time'=show '2/right/*'=hide }
   function p10k-on-pre-prompt()  { p10k display '1/left/*'=show '2/right/*'=hide }
   # Instant prompt mode.
   #
