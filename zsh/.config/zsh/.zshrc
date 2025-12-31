@@ -67,7 +67,7 @@ export PATH="$HOME/.pyenv/bin:$HOME/.local/bin:$PATH"
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PATH=$PATH:$HOME/.npm-global/bin
-export FZF_DEFAULT_COMMAND="fd --type file --color always --follow --hidden --no-ignore --exclude '~/.var' --exclude '~/.cache' --exclude '~/.local' --exclude '~/Videos'"
+#export FZF_CTRL_T__COMMAND="fd --type file --color always --follow --hidden --no-ignore --exclude '~/.var' --exclude '~/.cache' --exclude '~/.local' --exclude '~/Videos'"
 #export FZF_DEFAULT_COMMAND='find . -type f ! -path "*git*"'
 #export FZF_DEFAULT_COMMAND="rg --files --follow --hidden --glob '!.git'"
 export FZF_DEFAULT_OPTS="--highlight-line \
@@ -141,10 +141,10 @@ alias c="clear"
 alias k="kubectl"
 alias cat="bat"
 alias o="oc"
-alias ls='eza --icons=always'
-alias ll='eza -l --icons=always'
-alias la='eza -l -a --icons=always'
-alias lt='eza --tree --level=1 --icons=always'
+alias ls='eza -lh --group-directories-first --icons=always'
+alias ll='eza -l -lh --group-directories-first --icons=always'
+alias la='eza -l -a -lh --group-directories-first --icons=always'
+alias lt='eza --tree --level=1 --icons=always -lh --group-directories-first'
 alias azcli="source $HOME/code/go/src/github.com/Azure/ARO-RP/pyenv/bin/activate"
 alias arohcp="cd $HOME/code/go/src/github.com/Azure/ARO-HCP"
 alias arorp="cd $HOME/code/go/src/github.com/Azure/ARO-RP"
