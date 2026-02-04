@@ -4,7 +4,7 @@ initial_window_width        950
 initial_window_height       500
 cursor_blink_interval       0.5
 cursor_stop_blinking_after  0
-scrollback_lines            1000000
+scrollback_lines            -1
 scrollbar_track_opacity     0
 scrollbar_gap               1
 # scrollbar_handle_color      foreground
@@ -22,10 +22,10 @@ disable_ligatures never
 # Animated cursor follows text
 cursor_trail                  1
 cursor_shape                 beam
-adjust_font_size 0
-
+adjust_font_size            0
+detect_urls                 yes
 #include current-theme.conf
-include Catppuccin-Macchiato.conf
+#include Catppuccin-Macchiato.conf
 # END_KITTY_THEME
 
 # Remove outer padding
@@ -35,7 +35,7 @@ window_border_width             1px
 # Tab customizations
 tab_bar_edge top
 tab_bar_style               powerline
-tab_powerline_style         slanted
+tab_powerline_style         round
 #tab_title_template          {title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}
 #tab_bar_style powerline
 #tab_powerline_style round
@@ -62,6 +62,8 @@ bold_italic_font auto
 
 
 # BEGIN_KITTY_THEME
-# Tokyo Night Storm
+# Tokyo Night Moon
 include current-theme.conf
 # END_KITTY_THEME
+map shift+enter send_text all \e\r
+map ctrl+f kitten choose-files

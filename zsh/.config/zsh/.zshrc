@@ -133,6 +133,9 @@ autoload -Uz compinit
 compinit
 zinit cdreplay -q
 
+# Remove right prompt trailing space
+ZLE_RPROMPT_INDENT=0
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 source ${HOME}/.dotfiles/zsh/.config/zsh/.p10k.zsh
 
@@ -145,7 +148,7 @@ alias ls='eza -lh --group-directories-first --icons=always'
 alias ll='eza -l -lh --group-directories-first --icons=always'
 alias la='eza -l -a -lh --group-directories-first --icons=always'
 alias lt='eza --tree --level=1 --icons=always -lh --group-directories-first'
-alias azcli="source $HOME/code/go/src/github.com/Azure/ARO-RP/pyenv/bin/activate"
+#alias azcli="source $HOME/code/go/src/github.com/Azure/ARO-RP/pyenv/bin/activate"
 alias arohcp="cd $HOME/code/go/src/github.com/Azure/ARO-HCP"
 alias arorp="cd $HOME/code/go/src/github.com/Azure/ARO-RP"
 alias gover="$GOPATH/bin/g"; # g-install: do NOT edit, see https://github.com/stefanmaric/g
