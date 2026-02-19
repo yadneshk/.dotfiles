@@ -1,4 +1,4 @@
-font_size                   11.3
+font_size                   11
 remember_window_size        yes
 initial_window_width        950
 initial_window_height       500
@@ -49,7 +49,7 @@ repaint_delay                   6
 input_delay                     1
 sync_to_monitor                 no
 
-text_composition_strategy platform
+text_composition_strategy legacy 
 
 
 # BEGIN_KITTY_FONTS
@@ -62,7 +62,7 @@ bold_italic_font auto
 
 
 # BEGIN_KITTY_THEME
-# Tokyo Night Moon
+# Tokyo Night Storm
 include current-theme.conf
 # END_KITTY_THEME
 map shift+enter send_text all \e\r
