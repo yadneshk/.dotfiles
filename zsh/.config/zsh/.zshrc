@@ -57,6 +57,7 @@ zinit wait lucid light-mode for Aloxaf/fzf-tab
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
+#export GCM_CREDENTIAL_STORE=secretservice
 export DOCKER_COMMAND=podman
 export EDITOR=nvim
 export VISUAL=nvim
@@ -66,10 +67,11 @@ export GOPATH="$HOME/code/go"; export GOBIN="$GOPATH/bin"; export GOROOT="$HOME/
 export PATH="$HOME/.pyenv/bin:$HOME/.local/bin:$PATH"
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export PATH=$PATH:$HOME/.npm-global/bin
+#export PATH=$PATH:$HOME/.npm-global/bin
 #export FZF_CTRL_T__COMMAND="fd --type file --color always --follow --hidden --no-ignore --exclude '~/.var' --exclude '~/.cache' --exclude '~/.local' --exclude '~/Videos'"
 #export FZF_DEFAULT_COMMAND='find . -type f ! -path "*git*"'
 #export FZF_DEFAULT_COMMAND="rg --files --follow --hidden --glob '!.git'"
+export FZF_DEFAULT_COMMAND='fd --type f --color always --follow --hidden'
 export FZF_DEFAULT_OPTS="--highlight-line \
 --style=default \
 --height=60% \
@@ -153,12 +155,16 @@ alias arohcp="cd $HOME/code/go/src/github.com/Azure/ARO-HCP"
 alias arorp="cd $HOME/code/go/src/github.com/Azure/ARO-RP"
 alias gover="$GOPATH/bin/g"; # g-install: do NOT edit, see https://github.com/stefanmaric/g
 alias grep="grep --color=always"
+alias update="sudo dnf update -y && flatpak update -y && zinit update && zinit self-update"
 
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
 source ~/.azure_credentials.sh
 source ~/.claude.sh
-
+if [ $commands[oc] ]; then
+  source <(oc completion zsh)
+  compdef _oc oc
+fi
 #zmodload zsh/zprof
 #zprof

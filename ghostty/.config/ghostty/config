@@ -18,10 +18,10 @@ selection-foreground = #24273A
 
 # Fonts
 font-family = "JetBrainsMono Nerd Font"
-font-size = 11
-font-family-bold = "JetBrainsMono Nerd Font"
-font-family-italic = "JetBrainsMono Nerd Font"
-font-family-bold-italic = "JetBrainsMono Nerd Font"
+font-size = 11.3
+# font-family-bold = "JetBrainsMono Nerd Font"
+# font-family-italic = "JetBrainsMono Nerd Font"
+# font-family-bold-italic = "JetBrainsMono Nerd Font"
 
 # Linux
 gtk-wide-tabs = false
