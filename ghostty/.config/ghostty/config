@@ -18,7 +18,7 @@ selection-foreground = #24273A
 
 # Fonts
 font-family = "JetBrainsMono Nerd Font"
-font-size = 11.3
+font-size = 11.5
 # font-family-bold = "JetBrainsMono Nerd Font"
 # font-family-italic = "JetBrainsMono Nerd Font"
 # font-family-bold-italic = "JetBrainsMono Nerd Font"
@@ -59,3 +59,4 @@ app-notifications = no-clipboard-copy
 # Mouse
 mouse-hide-while-typing = true
 
+command = zsh

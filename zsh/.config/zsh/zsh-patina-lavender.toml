@@ -1,0 +1,78 @@
+# Comments
+"comment" = "#6E738D"
+"punctuation.definition.comment" = "#6E738D"
+
+# Strings
+"string" = "#A6DA95"
+"punctuation.definition.string" = "#A6DA95"
+
+# Escape characters
+"constant.character.escape" = "#F5BDE6"
+
+# Numbers
+"constant.numeric" = "#F5A97F"
+
+# Commands
+"variable.function" = "#C6A0F6"
+
+# Command arguments (general text after command)
+"meta.function-call.arguments" = "#CAD3F5"
+
+# Options and flags (--long and -s)
+"variable.parameter.option" = "#EE99A0"
+"variable.parameter.switch" = "#EE99A0"
+"punctuation.definition.parameter" = "#EE99A0"
+
+# Keywords and control flow
+"keyword" = "#8AADF4"
+"keyword.control" = "#C6A0F6"
+
+# Operators (pipe, &&, ||, redirections, etc.)
+"keyword.operator" = "#91D7E3"
+"keyword.operator.end-of-options" = "#6E738D"
+
+# Regex
+"keyword.operator.regexp" = "#EED49F"
+"meta.regexp" = "#F5BDE6"
+
+# Variables
+"variable.other" = "#EED49F"
+"punctuation.definition.variable" = "#EED49F"
+"variable.language" = "#ED8796"
+"variable.language.tilde" = "#C6A0F6"
+
+# Storage (variable assignments, function keyword)
+"storage" = "#C6A0F6"
+
+# Support (double braces, let, test)
+"support" = "#8AADF4"
+
+# Function names
+"entity.name.function" = "#EED49F"
+
+# Precommands (sudo, noglob, builtin, command, exec)
+"precommand" = "#8BD5CA"
+
+# Punctuation (braces, parens, brackets, separators)
+"punctuation.section" = "#939AB7"
+"punctuation.separator" = "#939AB7"
+
+# Expansions
+"meta.group.expansion.history" = "#EED49F"
+"meta.group.expansion.parameter" = "#EED49F"
+"meta.group.expansion.command.parens" = {}
+"meta.group.arithmetic" = "#F5A97F"
+
+# Dynamic highlighting
+"dynamic.callable" = "#C6A0F6"
+"dynamic.callable.builtin" = "#8AADF4"
+"dynamic.callable.function" = "#EED49F"
+"dynamic.callable.missing" = { foreground = "#ED8796", underline = true }
+"dynamic.path" = { underline = true }
+"dynamic.path.directory.complete" = { foreground = "#8AADF4", underline = true }
+
+# Invalid / syntax errors
+"invalid" = { foreground = "#ED8796", bold = true }
+
+[metadata]
+extends = "lavender"

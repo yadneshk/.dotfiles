@@ -1,3 +1,5 @@
+# zmodload zsh/zprof
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -43,12 +45,13 @@ setopt PATH_DIRS            # perform path search even on command names with sla
 zinit light romkatv/powerlevel10k
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-history-substring-search
-zinit light zsh-users/zsh-autosuggestions
+# zinit light zsh-users/zsh-autosuggestions
 zinit light mrjohannchang/zsh-interactive-cd
-#source /home/ykulkarn/code/ricing/zsh-syntax-highlighting/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zdharma-continuum/fast-syntax-highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp cursor root line)
+zinit ice as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload'eval "$(zsh-patina activate)"'
+zinit light michel-kraemer/zsh-patina
+# zinit light zsh-users/zsh-syntax-highlighting
+# zinit light zdharma-continuum/fast-syntax-highlighting
+#ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp cursor root line)
 
 # Lazy loading
 zinit wait lucid atload'_zsh_autosuggest_start' light-mode for zsh-users/zsh-autosuggestions
@@ -142,9 +145,11 @@ ZLE_RPROMPT_INDENT=0
 source ${HOME}/.dotfiles/zsh/.config/zsh/.p10k.zsh
 
 alias vim="nvim"
+alias vimdiff="nvim -d"
+alias diff="colordiff -y"
 alias c="clear"
 alias k="kubectl"
-alias cat="bat"
+alias cat="bat -p"
 alias o="oc"
 alias ls='eza -lh --group-directories-first --icons=always'
 alias ll='eza -l -lh --group-directories-first --icons=always'
@@ -155,16 +160,18 @@ alias arohcp="cd $HOME/code/go/src/github.com/Azure/ARO-HCP"
 alias arorp="cd $HOME/code/go/src/github.com/Azure/ARO-RP"
 alias gover="$GOPATH/bin/g"; # g-install: do NOT edit, see https://github.com/stefanmaric/g
 alias grep="grep --color=always"
-alias update="sudo dnf update -y && flatpak update -y && zinit update && zinit self-update"
+alias update="sudo dnf upgrade --refresh -y && flatpak update -y && zinit update && zinit self-update"
+alias aro="az aro"
 
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
+eval "$(deja init zsh)"
 
-source ~/.azure_credentials.sh
-source ~/.claude.sh
+source ./.azure_credentials.sh
 if [ $commands[oc] ]; then
   source <(oc completion zsh)
   compdef _oc oc
 fi
-#zmodload zsh/zprof
-#zprof
+
+
+# zprof
