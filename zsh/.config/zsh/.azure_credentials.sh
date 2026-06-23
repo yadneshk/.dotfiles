@@ -1,9 +1,5 @@
 #!/usr/bin/zsh
 
-export CLAUDE_CODE_USE_VERTEX=1
-export CLOUD_ML_REGION=global
-export ANTHROPIC_VERTEX_PROJECT_ID=itpc-gcp-hcm-pe-eng-claude
-
 alias azsre-shared-cluster-login="oc login https://api.vbj6calm.eastus.aroapp.io:6443/ -u kubeadmin -p 9HTmP-ypPXn-5ccXP-PQnow"
 alias azcanary="az account set --subscription 60bf318d-6914-4105-a3b5-d0d2c10388c8"
 alias azsre="az account set --subscription fe16a035-e540-4ab7-80d9-373fa9a3d6ae"
