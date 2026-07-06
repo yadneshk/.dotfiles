@@ -55,7 +55,7 @@ zinit light michel-kraemer/zsh-patina
 
 # Lazy loading
 zinit wait lucid atload'_zsh_autosuggest_start' light-mode for zsh-users/zsh-autosuggestions
-zinit wait lucid light-mode for Aloxaf/fzf-tab
+#zinit wait lucid light-mode for Aloxaf/fzf-tab
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
@@ -74,63 +74,61 @@ export LC_ALL=en_US.UTF-8
 #export FZF_CTRL_T__COMMAND="fd --type file --color always --follow --hidden --no-ignore --exclude '~/.var' --exclude '~/.cache' --exclude '~/.local' --exclude '~/Videos'"
 #export FZF_DEFAULT_COMMAND='find . -type f ! -path "*git*"'
 #export FZF_DEFAULT_COMMAND="rg --files --follow --hidden --glob '!.git'"
-export FZF_DEFAULT_COMMAND='fd --type f --color always --follow --hidden'
+# export FZF_DEFAULT_COMMAND='fd --type f --color always --follow --hidden'
 export FZF_DEFAULT_OPTS="--highlight-line \
 --style=default \
 --height=60% \
 --layout=reverse \
 --info=inline-right \
---ansi \
---border=rounded \
---prompt '∷ ' \
---marker ⇒ \
+--border \
 --color=bg+:#363A4F,bg:#24273A,spinner:#F4DBD6,hl:#ED8796 \
 --color=fg:#CAD3F5,header:#ED8796,info:#C6A0F6,pointer:#F4DBD6 \
 --color=marker:#B7BDF8,fg+:#CAD3F5,prompt:#C6A0F6,hl+:#ED8796 \
 --color=selected-bg:#494D64 \
 --color=border:#6E738D,label:#CAD3F5"
-export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :100 {}'"
-export FZF_ALT_C_COMMAND='fd --color always --hidden --type d . '
-export FZF_ALT_C_OPTS="--preview 'eza -l -T -L 2 --group-directories-first --color=always --icons=always {}'"
-
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' menu no
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*:descriptions' format '-- %d --'
-zstyle ':completion:*:processes' command 'ps -au$USER'
-zstyle ':completion:complete:*:options' sort true
-zstyle ':fzf-tab:*' use-fzf-default-opts yes
-zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
-zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
-#zstyle ":fzf-tab:complete:cd:*" fzf-preview "tree -L 2 -C \${realpath}"
-zstyle ':completion:*' fzf-search-display true
-
-# General file preview for most commands (should come first)
-zstyle ':fzf-tab:complete:*:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; elif [[ -d $realpath ]]; then eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
-
-# Specific cd preview (more specific, comes after general)
-zstyle ":fzf-tab:complete:cd:*" fzf-preview "eza -l -T -L 2 --group-directories-first --color=always --icons=always \${realpath}"
-
-# Specific previews for common commands
-zstyle ':fzf-tab:complete:vim:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-zstyle ':fzf-tab:complete:nvim:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-zstyle ':fzf-tab:complete:cat:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-zstyle ':fzf-tab:complete:bat:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-zstyle ':fzf-tab:complete:less:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-zstyle ':fzf-tab:complete:ls:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; else eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
-zstyle ':fzf-tab:complete:eza:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; else eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
-
-#zstyle ':completion:*' matcher-list "" "m:{a-z}={A-Z}" "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=* l:|=*" 
-#zstyle ':completion:*' menu select=2
-zstyle ":completion:*" completer _expand _complete _correct _approximate
-zstyle ":completion:*" list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-#zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-#zstyle ":completion:*" use-compctl false
-#zstyle ":completion:*" verbose true
-#zstyle ':fzf-tab:*' use-fzf-default-opts yes
-#zstyle ":fzf-tab:complete:cd:*" fzf-preview "eza -1 --color=always --icons=always \${realpath}"
+export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}'"
+export FZF_CTRL_R_OPTS="--with-nth 2.."
+#export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :100 {}'"
+export FZF_ALT_C_OPTS="--preview 'eza -T -L 2 --group-directories-first --color=always --icons=always {}'"
+#
+# zstyle ':completion:*' completer _expand _complete _ignored _approximate
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# zstyle ':completion:*' menu no
+# zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+# zstyle ':completion:*:descriptions' format '-- %d --'
+# zstyle ':completion:*:processes' command 'ps -au$USER'
+# zstyle ':completion:complete:*:options' sort true
+# zstyle ':fzf-tab:*' use-fzf-default-opts yes
+# zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
+# zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
+# #zstyle ":fzf-tab:complete:cd:*" fzf-preview "tree -L 2 -C \${realpath}"
+# zstyle ':completion:*' fzf-search-display true
+#
+# # General file preview for most commands (should come first)
+# zstyle ':fzf-tab:complete:*:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; elif [[ -d $realpath ]]; then eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
+#
+# # Specific cd preview (more specific, comes after general)
+# zstyle ":fzf-tab:complete:cd:*" fzf-preview "eza -l -T -L 2 --group-directories-first --color=always --icons=always \${realpath}"
+#
+# # Specific previews for common commands
+# zstyle ':fzf-tab:complete:vim:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+# zstyle ':fzf-tab:complete:nvim:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+# zstyle ':fzf-tab:complete:cat:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+# zstyle ':fzf-tab:complete:bat:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+# zstyle ':fzf-tab:complete:less:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
+# zstyle ':fzf-tab:complete:ls:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; else eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
+# zstyle ':fzf-tab:complete:eza:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; else eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
+#
+# #zstyle ':completion:*' matcher-list "" "m:{a-z}={A-Z}" "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=* l:|=*" 
+# #zstyle ':completion:*' menu select=2
+# zstyle ":completion:*" completer _expand _complete _correct _approximate
+# zstyle ":completion:*" list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+# #zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+# #zstyle ":completion:*" use-compctl false
+# #zstyle ":completion:*" verbose true
+# #zstyle ':fzf-tab:*' use-fzf-default-opts yes
+# #zstyle ":fzf-tab:complete:cd:*" fzf-preview "eza -1 --color=always --icons=always \${realpath}"
 
 
 # Turbo
@@ -165,9 +163,8 @@ alias aro="az aro"
 
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
-eval "$(deja init zsh)"
 
-source ./.azure_credentials.sh
+source ${HOME}/.dotfiles/zsh/.config/zsh/.azure_credentials.sh
 if [ $commands[oc] ]; then
   source <(oc completion zsh)
   compdef _oc oc

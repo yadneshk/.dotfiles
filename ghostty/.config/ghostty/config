@@ -27,6 +27,7 @@ font-size = 11.5
 gtk-wide-tabs = false
 linux-cgroup = always
 gtk-toolbar-style = flat
+gtk-titlebar-style = tabs
 
 # Cursor
 cursor-style = bar
@@ -35,9 +36,6 @@ cursor-style-blink = true
 # Application
 maximize = true
 link-url = true
-
-# Macos
-auto-update = check
 
 # Keybinds
 keybind = ctrl+shift+r=reload_config
