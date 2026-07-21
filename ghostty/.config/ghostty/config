@@ -11,6 +11,7 @@ window-colorspace = display-p3
 split-divider-color = #dc8a78
 
 # Colors
+#theme = ghostty-catppuccin-macchiato.conf
 theme = tokyo-night-storm.conf
 cursor-invert-fg-bg = true
 selection-background = #dc8a78
@@ -32,6 +33,7 @@ gtk-titlebar-style = tabs
 # Cursor
 cursor-style = bar
 cursor-style-blink = true
+shell-integration-features = no-cursor
 
 # Application
 maximize = true

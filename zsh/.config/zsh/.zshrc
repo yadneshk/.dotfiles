@@ -18,6 +18,17 @@ bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey "^[[1;5D" backward-word   # Ctrl+Left
 bindkey "^[[1;5C" forward-word    # Ctrl+Right
+fcd-widget() {
+  local dir="$(fd --type d --hidden . '/home/ykulkarn' | fzf)"
+  if [[ -n "$dir" ]]; then
+    zle push-line
+    BUFFER="builtin cd -- ${(q)dir}"
+    zle accept-line
+  fi
+  zle reset-prompt
+}
+zle -N fcd-widget
+bindkey '\ed' fcd-widget
 WORDCHARS='*?_[]~&;!#$%^(){}<>'
 
 # History
@@ -58,6 +69,8 @@ zinit wait lucid atload'_zsh_autosuggest_start' light-mode for zsh-users/zsh-aut
 #zinit wait lucid light-mode for Aloxaf/fzf-tab
 
 # Set up fzf key bindings and fuzzy completion
+export FZF_CTRL_T_COMMAND="fd --type f --hidden --follow"
+export FZF_ALT_C_COMMAND="fd --type d --hidden --follow"
 source <(fzf --zsh)
 
 #export GCM_CREDENTIAL_STORE=secretservice
@@ -67,7 +80,7 @@ export VISUAL=nvim
 export COLORTERM=${COLORTERM:-truecolor}
 export XDG_CONFIG_HOME="$HOME/.config"
 export GOPATH="$HOME/code/go"; export GOBIN="$GOPATH/bin"; export GOROOT="$HOME/code/go/goroot"; export PATH="$GOPATH/bin:$PATH"; # g-install: do NOT edit, see https://github.com/stefanmaric/g
-export PATH="$HOME/.pyenv/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/.pyenv/bin:$HOME/.local/bin:/usr/local/bin:$HOME/code/go/src/github.com/Azure/ARO-HCP/tooling/hcpctl:$PATH"
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 #export PATH=$PATH:$HOME/.npm-global/bin
