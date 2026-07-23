@@ -8,7 +8,7 @@ C_ACTIVE_BG = as_rgb(0x7AA2F7)
 C_ACTIVE_FG = as_rgb(0x1F2335)
 C_INACTIVE_BG = as_rgb(0x3B4261)
 C_INACTIVE_FG = as_rgb(0x636DA6)
-C_BAR_BG = as_rgb(0x1D202F)
+C_BAR_BG = as_rgb(0x24283B)
 C_ACCENT = as_rgb(0x9ECE6A)
 
 ICONS = {
@@ -80,6 +80,8 @@ def draw_tab(
     budget = max(0, max_tab_length - (screen.cursor.x - before) - suffix_len - 2)
 
     title = f"{index}: {tab.title}"
+    if len(title) > 50:
+        title = title[:49] + "…"
     if len(title) > budget:
         title = title[: budget - 1] + "…" if budget > 1 else ""
     screen.draw(title)

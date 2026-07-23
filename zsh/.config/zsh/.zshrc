@@ -99,7 +99,7 @@ export FZF_DEFAULT_OPTS="--highlight-line \
 --color=marker:#B7BDF8,fg+:#CAD3F5,prompt:#C6A0F6,hl+:#ED8796 \
 --color=selected-bg:#494D64 \
 --color=border:#6E738D,label:#CAD3F5"
-export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}'"
+export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}' --bind='enter:become:nvim {} >/dev/tty'"
 export FZF_CTRL_R_OPTS="--with-nth 2.."
 #export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :100 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza -T -L 2 --group-directories-first --color=always --icons=always {}'"
