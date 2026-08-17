@@ -34,24 +34,26 @@ WORDCHARS='*?_[]~&;!#$%^(){}<>'
 # History
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
-SAVEHIST=$HISTSIZE
+SAVEHIST=10000000
 HISTDUP=erase
 
 # Apply sensisble zsh settings
 setopt ALWAYS_TO_END        # full completions move cursor to the end
 setopt AUTO_CD              # `dirname` is equivalent to `cd dirname`
 setopt AUTO_PARAM_SLASH     # if completed parameter is a directory, add a trailing slash
-setopt appendhistory
-setopt sharehistory
-setopt hist_ignore_space
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
 setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_FIND_NO_DUPS
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_find_no_dups
 setopt INTERACTIVE_COMMENTS
-setopt correct              # Correct typos
+setopt CORRECT              # Correct typos
 setopt PATH_DIRS            # perform path search even on command names with slashes
+setopt COMPLETE_ALIASES
+
 
 zinit light romkatv/powerlevel10k
 zinit light zsh-users/zsh-completions
@@ -71,7 +73,12 @@ zinit wait lucid atload'_zsh_autosuggest_start' light-mode for zsh-users/zsh-aut
 # Set up fzf key bindings and fuzzy completion
 export FZF_CTRL_T_COMMAND="fd --type f --hidden --follow"
 export FZF_ALT_C_COMMAND="fd --type d --hidden --follow"
-source <(fzf --zsh)
+_fzf_cache="${XDG_CACHE_HOME:-$HOME/.cache}/fzf-zsh.zsh"
+if [[ ! -f "$_fzf_cache" || "$(command -v fzf)" -nt "$_fzf_cache" ]]; then
+  fzf --zsh > "$_fzf_cache"
+fi
+source "$_fzf_cache"
+unset _fzf_cache
 
 #export GCM_CREDENTIAL_STORE=secretservice
 export DOCKER_COMMAND=podman
@@ -90,20 +97,21 @@ export LC_ALL=en_US.UTF-8
 # export FZF_DEFAULT_COMMAND='fd --type f --color always --follow --hidden'
 export FZF_DEFAULT_OPTS="--highlight-line \
 --style=default \
---height=60% \
+--height=40% \
 --layout=reverse \
 --info=inline-right \
---border \
+--border=rounded \
 --color=bg+:#363A4F,bg:#24273A,spinner:#F4DBD6,hl:#ED8796 \
 --color=fg:#CAD3F5,header:#ED8796,info:#C6A0F6,pointer:#F4DBD6 \
 --color=marker:#B7BDF8,fg+:#CAD3F5,prompt:#C6A0F6,hl+:#ED8796 \
 --color=selected-bg:#494D64 \
 --color=border:#6E738D,label:#CAD3F5"
-export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}' --bind='enter:become:nvim {} >/dev/tty'"
-export FZF_CTRL_R_OPTS="--with-nth 2.."
+export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}'"
+# export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}' --bind='enter:become:nvim {} >/dev/tty'"
+export FZF_CTRL_R_OPTS="--with-nth 2.. --color header:italic"
 #export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :100 {}'"
-export FZF_ALT_C_OPTS="--preview 'eza -T -L 2 --group-directories-first --color=always --icons=always {}'"
-#
+export FZF_ALT_C_OPTS="--delimiter=/ --nth=-2 --preview 'eza -T -L 2 --group-directories-first --color=always --icons=always {}'"
+
 # zstyle ':completion:*' completer _expand _complete _ignored _approximate
 # zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -146,7 +154,11 @@ export FZF_ALT_C_OPTS="--preview 'eza -T -L 2 --group-directories-first --color=
 
 # Turbo
 autoload -Uz compinit
-compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 zinit cdreplay -q
 
 # Remove right prompt trailing space
@@ -174,14 +186,38 @@ alias grep="grep --color=always"
 alias update="sudo dnf upgrade --refresh -y && flatpak update -y && zinit update && zinit self-update"
 alias aro="az aro"
 
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
+kenv() {
+  local kf
+  kf=$(print -l "$HOME"/.kube/config(N) "$HOME"/.kube/*.kubeconfig(N) | fzf --prompt="kubeconfig> " --preview='kubectl --kubeconfig {} config get-contexts --no-headers 2>/dev/null' --height=40% --delimiter=/ --nth=-1 --with-nth=-1) || return
+  export KUBECONFIG="$kf"
+}
+
+kns() {
+  local ns
+  ns=$(kubectl get namespaces -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' 2>/dev/null | fzf --prompt="namespace> " --preview='kubectl get pods -n {} --no-headers 2>/dev/null | head -20' --height=40%) || return
+  kubectl config set-context --current --namespace="$ns"
+}
+
+export PATH="$HOME/.pyenv/shims:$PATH"
+pyenv() {
+  unfunction pyenv
+  eval "$(command pyenv init --path)"
+  eval "$(command pyenv init -)"
+  pyenv "$@"
+}
 
 source ${HOME}/.dotfiles/zsh/.config/zsh/.azure_credentials.sh
 if [ $commands[oc] ]; then
   source <(oc completion zsh)
   compdef _oc oc
 fi
+if [ $commands[k] ]; then
+  source <(kubectl completion zsh)
+  compdef _kubectl k
+fi
 
+
+[ -f "/home/ykulkarn/.config/claude-code-vertex/env.sh" ] && . "/home/ykulkarn/.config/claude-code-vertex/env.sh"
 
 # zprof
+
