@@ -32,7 +32,7 @@ bindkey '\ed' fcd-widget
 WORDCHARS='*?_[]~&;!#$%^(){}<>'
 
 # History
-HISTSIZE=5000
+HISTSIZE=100000
 HISTFILE=~/.zsh_history
 SAVEHIST=10000000
 HISTDUP=erase
@@ -49,6 +49,8 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
+setopt HIST_REDUCE_BLANKS     # strip superfluous blanks from history entries
+setopt HIST_VERIFY            # edit history-expanded line before executing
 setopt INTERACTIVE_COMMENTS
 setopt CORRECT              # Correct typos
 setopt PATH_DIRS            # perform path search even on command names with slashes
@@ -79,6 +81,22 @@ if [[ ! -f "$_fzf_cache" || "$(command -v fzf)" -nt "$_fzf_cache" ]]; then
 fi
 source "$_fzf_cache"
 unset _fzf_cache
+
+# Lazy-load fzf: widgets self-replace on first keypress
+__fzf_lazy_init() {
+  emulate -L zsh
+  unfunction __fzf_lazy_init __fzf_ctrl_r __fzf_ctrl_t __fzf_alt_c 2>/dev/null
+  source <(fzf --zsh)
+  zle "${1}" -- "${@:2}"
+}
+for __w in fzf-history-widget fzf-file-widget fzf-cd-widget; do
+  eval "__fzf_${__w}() { __fzf_lazy_init ${__w} \"\$@\" }"
+  zle -N "${__w}" "__fzf_${__w}"
+done
+unset __w
+bindkey '^R' fzf-history-widget
+bindkey '^T' fzf-file-widget
+bindkey '\ec' fzf-cd-widget
 
 #export GCM_CREDENTIAL_STORE=secretservice
 export DOCKER_COMMAND=podman
