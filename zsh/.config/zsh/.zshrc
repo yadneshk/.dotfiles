@@ -129,6 +129,8 @@ export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}'"
 export FZF_CTRL_R_OPTS="--with-nth 2.. --color header:italic"
 #export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :100 {}'"
 export FZF_ALT_C_OPTS="--delimiter=/ --nth=-2 --preview 'eza -T -L 2 --group-directories-first --color=always --icons=always {}'"
+# export CLAUDE_STATUSLINE_NERDFONT=1 
+# export CLAUDE_STATUSLINE_POWERLINE=1 
 
 # zstyle ':completion:*' completer _expand _complete _ignored _approximate
 # zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
