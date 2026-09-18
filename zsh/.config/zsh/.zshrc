@@ -126,7 +126,8 @@ export FZF_DEFAULT_OPTS="--highlight-line \
 --color=border:#6E738D,label:#CAD3F5"
 export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}'"
 # export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}' --bind='enter:become:nvim {} >/dev/tty'"
-export FZF_CTRL_R_OPTS="--with-nth 2.. --color header:italic"
+# export FZF_CTRL_R_OPTS="--with-nth 2.. --color header:italic"
+export FZF_CTRL_R_OPTS="--preview 'echo {2..}' --preview-window down:3:wrap --with-nth 2.. --color header:italic"
 #export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :100 {}'"
 export FZF_ALT_C_OPTS="--delimiter=/ --nth=-2 --preview 'eza -T -L 2 --group-directories-first --color=always --icons=always {}'"
 # export CLAUDE_STATUSLINE_NERDFONT=1 
@@ -186,6 +187,7 @@ ZLE_RPROMPT_INDENT=0
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 source ${HOME}/.dotfiles/zsh/.config/zsh/.p10k.zsh
+source ${ZDOTDIR:-${HOME}/.dotfiles/zsh/.config/zsh}/.history-success-only.zsh
 
 alias vim="nvim"
 alias vimdiff="nvim -d"
@@ -205,6 +207,7 @@ alias gover="$GOPATH/bin/g"; # g-install: do NOT edit, see https://github.com/st
 alias grep="grep --color=always"
 alias update="sudo dnf upgrade --refresh -y && flatpak update -y && zinit update && zinit self-update"
 alias aro="az aro"
+alias ctx="kubectx"
 
 kenv() {
   local kf
@@ -219,6 +222,7 @@ kns() {
 }
 
 export PATH="$HOME/.pyenv/shims:$PATH"
+export KUBECONFIG=$(find ~/.kube -maxdepth 1 -name '*.kubeconfig' | paste -sd:)
 pyenv() {
   unfunction pyenv
   eval "$(command pyenv init --path)"
@@ -238,6 +242,5 @@ fi
 
 
 [ -f "/home/ykulkarn/.config/claude-code-vertex/env.sh" ] && . "/home/ykulkarn/.config/claude-code-vertex/env.sh"
-
 # zprof
 
