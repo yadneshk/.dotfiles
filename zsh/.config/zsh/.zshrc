@@ -69,6 +69,19 @@ zinit light michel-kraemer/zsh-patina
 #ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp cursor root line)
 
 # Lazy loading
+# Must be set before autosuggestions binds widgets. Wrapping
+# delete-char-or-list makes Ctrl-D swallow EOF instead of logging out.
+typeset -ga ZSH_AUTOSUGGEST_IGNORE_WIDGETS=(
+  orig-\*
+  beep
+  run-help
+  set-local-history
+  which-command
+  yank
+  yank-pop
+  zle-\*
+  delete-char-or-list
+)
 zinit wait lucid atload'_zsh_autosuggest_start' light-mode for zsh-users/zsh-autosuggestions
 #zinit wait lucid light-mode for Aloxaf/fzf-tab
 
@@ -87,6 +100,7 @@ __fzf_lazy_init() {
   emulate -L zsh
   unfunction __fzf_lazy_init __fzf_ctrl_r __fzf_ctrl_t __fzf_alt_c 2>/dev/null
   source <(fzf --zsh)
+  zle -N fzf-history-widget fzf-history-widget-with-delete 2>/dev/null
   zle "${1}" -- "${@:2}"
 }
 for __w in fzf-history-widget fzf-file-widget fzf-cd-widget; do
@@ -97,6 +111,7 @@ unset __w
 bindkey '^R' fzf-history-widget
 bindkey '^T' fzf-file-widget
 bindkey '\ec' fzf-cd-widget
+source ${ZDOTDIR:-${HOME}/.dotfiles/zsh/.config/zsh}/.fzf-history-delete.zsh
 
 #export GCM_CREDENTIAL_STORE=secretservice
 export DOCKER_COMMAND=podman

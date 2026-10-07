@@ -38,6 +38,7 @@
     # =========================[ Line #2 ]=========================
     newline                 # \n
     # time                    # current time (for transient prompt timestamp)
+    git_delta               # (+added/-removed) lines, transient prompt only
     prompt_char             # prompt symbol
   )
 
@@ -385,6 +386,66 @@
   #
   # VCS_STATUS_* parameters are set by gitstatus plugin. See reference:
   # https://github.com/romkatv/gitstatus/blob/master/gitstatus.plugin.zsh.
+  #
+  # gitstatus counts files, not lines. my_git_line_delta fills:
+  #   my_git_lines  "(+added/-removed)" from git diff HEAD
+  #   my_git_delta  that, plus "(!unstaged)" — what the transient prompt shows
+  typeset -g my_git_lines=
+  typeset -g my_git_delta=
+  typeset -g _MY_GIT_LINE_DELTA_KEY=
+  typeset -g _MY_GIT_LINE_DELTA_CACHED=
+  typeset -g _MY_GIT_LINE_DELTA_LINES=
+  typeset -gF _MY_GIT_LINE_DELTA_AT=0
+  function my_git_line_delta() {
+    emulate -L zsh
+    typeset -g my_git_lines= my_git_delta=
+
+    [[ $VCS_STATUS_RESULT == ok-* && -n $VCS_STATUS_WORKDIR ]] || return
+    # Untracked files are not part of the line diff.
+    if (( ${VCS_STATUS_HAS_STAGED:-0} == 0 && ${VCS_STATUS_HAS_UNSTAGED:-0} == 0 )); then
+      return
+    fi
+
+    local key="${VCS_STATUS_WORKDIR}|${VCS_STATUS_COMMIT}|${VCS_STATUS_NUM_STAGED}|${VCS_STATUS_NUM_UNSTAGED}|${VCS_STATUS_NUM_CONFLICTED}"
+    if [[ $key == $_MY_GIT_LINE_DELTA_KEY ]] && (( EPOCHREALTIME - _MY_GIT_LINE_DELTA_AT < 0.5 )); then
+      my_git_lines=$_MY_GIT_LINE_DELTA_LINES
+      my_git_delta=$_MY_GIT_LINE_DELTA_CACHED
+      return
+    fi
+
+    local added=0 deleted=0 a d rest line
+    local -a lines
+    lines=("${(@f)$(
+      {
+        if (( $+commands[timeout] )); then
+          timeout 0.5 \
+            git -C "$VCS_STATUS_WORKDIR" --no-optional-locks diff --no-ext-diff --numstat HEAD
+        else
+          git -C "$VCS_STATUS_WORKDIR" --no-optional-locks diff --no-ext-diff --numstat HEAD
+        fi
+      } 2>/dev/null
+    )}")
+    for line in "${lines[@]}"; do
+      [[ -z $line ]] && continue
+      a=${line%%$'\t'*}
+      rest=${line#*$'\t'}
+      d=${rest%%$'\t'*}
+      [[ $a == <-> ]] && (( added += a ))
+      [[ $d == <-> ]] && (( deleted += d ))
+    done
+
+    local summary=
+    (( added || deleted )) && summary="(+${added}/-${deleted})"
+    local -i files=${VCS_STATUS_NUM_UNSTAGED:-0}
+    local val=$summary
+    if (( files > 0 )); then
+      [[ -n $val ]] && val+=' '
+      val+="(!${files})"
+    fi
+    typeset -g my_git_lines=$summary my_git_delta=$val
+    typeset -g _MY_GIT_LINE_DELTA_KEY=$key _MY_GIT_LINE_DELTA_LINES=$summary _MY_GIT_LINE_DELTA_CACHED=$val
+    typeset -gF _MY_GIT_LINE_DELTA_AT=$EPOCHREALTIME
+  }
   function my_git_formatter() {
     emulate -L zsh
 
@@ -477,6 +538,10 @@
     # in the repository config. The number of staged and untracked files may also be unknown
     # in this case.
     (( VCS_STATUS_HAS_UNSTAGED == -1 )) && res+=" ${modified}─"
+    # (+inserted/-deleted) lines versus HEAD, staged and unstaged together.
+    # Unstaged file count stays as !N above; (!N) is only on the transient prompt.
+    my_git_line_delta
+    [[ -n $my_git_lines ]] && res+=" ${modified}${my_git_lines}"
 
     typeset -g my_git_format=$res
   }
@@ -1818,8 +1883,29 @@
   #               typed after changing current working directory.
   typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=off
 
-  function p10k-on-post-prompt() { p10k display '1/left/*'=hide '1/right/time'=show '2/right/*'=hide }
-  function p10k-on-pre-prompt()  { p10k display '1/left/*'=show '2/right/*'=hide }
+  # Past prompt: "(+added/-removed) (!unstaged files)". Hidden on the current prompt.
+  typeset -g POWERLEVEL9K_GIT_DELTA_BACKGROUND=
+  typeset -g POWERLEVEL9K_GIT_DELTA_FOREGROUND=3
+  typeset -g POWERLEVEL9K_GIT_DELTA_VISUAL_IDENTIFIER_EXPANSION=
+  typeset -g POWERLEVEL9K_GIT_DELTA_LEFT_LEFT_WHITESPACE=
+  typeset -g POWERLEVEL9K_GIT_DELTA_LEFT_RIGHT_WHITESPACE=' '
+  typeset -g POWERLEVEL9K_GIT_DELTA_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL=''
+  typeset -g POWERLEVEL9K_GIT_DELTA_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL=''
+  # Both segments are transparent, so p10k treats them as one color and inserts .
+  typeset -g POWERLEVEL9K_GIT_DELTA_LEFT_SUBSEGMENT_SEPARATOR=
+  typeset -g POWERLEVEL9K_GIT_DELTA_LEFT_SEGMENT_SEPARATOR=
+
+  function prompt_git_delta() {
+    p10k segment -b '' -f 3 -e -c '${my_git_delta}' -t '${my_git_delta}'
+  }
+
+  # Recompute in the parent shell before the transient prompt is drawn. The vcs
+  # formatter also calls my_git_line_delta; the short cache keeps that to one diff.
+  function p10k-on-post-prompt() {
+    my_git_line_delta
+    p10k display '1/left/*'=hide '2/left/git_delta'=show '1/right/time'=show '2/right/*'=hide
+  }
+  function p10k-on-pre-prompt()  { p10k display '1/left/*'=show '1/left/git_delta'=hide '2/left/git_delta'=hide '2/right/*'=hide }
   # Instant prompt mode.
   #
   #   - off:     Disable instant prompt. Choose this if you've tried instant prompt and found
