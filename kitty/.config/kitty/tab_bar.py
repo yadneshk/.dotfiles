@@ -79,7 +79,8 @@ def draw_tab(
         suffix_len += len(f" +{tab.num_windows}")
     budget = max(0, max_tab_length - (screen.cursor.x - before) - suffix_len - 2)
 
-    title = f"{index}: {tab.title}"
+    short_title = tab.title.rsplit("/", 1)[-1] if "/" in tab.title else tab.title
+    title = f"{index}: {short_title}"
     if len(title) > 50:
         title = title[:49] + "…"
     if len(title) > budget:
