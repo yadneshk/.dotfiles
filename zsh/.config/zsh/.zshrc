@@ -62,7 +62,7 @@ zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-history-substring-search
 # zinit light zsh-users/zsh-autosuggestions
 zinit light mrjohannchang/zsh-interactive-cd
-zinit ice as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload'eval "$(zsh-patina activate)"'
+zinit ice as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" nocompletions atload'eval "$(zsh-patina activate)"'
 zinit light michel-kraemer/zsh-patina
 # zinit light zsh-users/zsh-syntax-highlighting
 # zinit light zdharma-continuum/fast-syntax-highlighting
@@ -145,48 +145,6 @@ export FZF_CTRL_T_OPTS="--preview 'fzf-preview.sh {}'"
 export FZF_CTRL_R_OPTS="--preview 'echo {2..}' --preview-window down:3:wrap --with-nth 2.. --color header:italic"
 #export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :100 {}'"
 export FZF_ALT_C_OPTS="--delimiter=/ --nth=-2 --preview 'eza -T -L 2 --group-directories-first --color=always --icons=always {}'"
-# export CLAUDE_STATUSLINE_NERDFONT=1 
-# export CLAUDE_STATUSLINE_POWERLINE=1 
-
-# zstyle ':completion:*' completer _expand _complete _ignored _approximate
-# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-# zstyle ':completion:*' menu no
-# zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-# zstyle ':completion:*:descriptions' format '-- %d --'
-# zstyle ':completion:*:processes' command 'ps -au$USER'
-# zstyle ':completion:complete:*:options' sort true
-# zstyle ':fzf-tab:*' use-fzf-default-opts yes
-# zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
-# zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
-# #zstyle ":fzf-tab:complete:cd:*" fzf-preview "tree -L 2 -C \${realpath}"
-# zstyle ':completion:*' fzf-search-display true
-#
-# # General file preview for most commands (should come first)
-# zstyle ':fzf-tab:complete:*:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; elif [[ -d $realpath ]]; then eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
-#
-# # Specific cd preview (more specific, comes after general)
-# zstyle ":fzf-tab:complete:cd:*" fzf-preview "eza -l -T -L 2 --group-directories-first --color=always --icons=always \${realpath}"
-#
-# # Specific previews for common commands
-# zstyle ':fzf-tab:complete:vim:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-# zstyle ':fzf-tab:complete:nvim:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-# zstyle ':fzf-tab:complete:cat:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-# zstyle ':fzf-tab:complete:bat:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-# zstyle ':fzf-tab:complete:less:*' fzf-preview 'bat --color=always --style=numbers --line-range :100 $realpath'
-# zstyle ':fzf-tab:complete:ls:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; else eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
-# zstyle ':fzf-tab:complete:eza:*' fzf-preview 'if [[ -f $realpath ]]; then bat --color=always --style=numbers --line-range :100 $realpath; else eza -l -T -L 2 --group-directories-first --color=always --icons=always $realpath; fi'
-#
-# #zstyle ':completion:*' matcher-list "" "m:{a-z}={A-Z}" "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=* l:|=*" 
-# #zstyle ':completion:*' menu select=2
-# zstyle ":completion:*" completer _expand _complete _correct _approximate
-# zstyle ":completion:*" list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-# #zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-# #zstyle ":completion:*" use-compctl false
-# #zstyle ":completion:*" verbose true
-# #zstyle ':fzf-tab:*' use-fzf-default-opts yes
-# #zstyle ":fzf-tab:complete:cd:*" fzf-preview "eza -1 --color=always --icons=always \${realpath}"
-
 
 # Turbo
 autoload -Uz compinit
@@ -224,17 +182,143 @@ alias update="sudo dnf upgrade --refresh -y && flatpak update -y && zinit update
 alias aro="az aro"
 alias ctx="kubectx"
 
-kenv() {
+fkenv() {
   local kf
   kf=$(print -l "$HOME"/.kube/config(N) "$HOME"/.kube/*.kubeconfig(N) | fzf --prompt="kubeconfig> " --preview='kubectl --kubeconfig {} config get-contexts --no-headers 2>/dev/null' --height=40% --delimiter=/ --nth=-1 --with-nth=-1) || return
   export KUBECONFIG="$kf"
 }
 
-kns() {
-  local ns
-  ns=$(kubectl get namespaces -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' 2>/dev/null | fzf --prompt="namespace> " --preview='kubectl get pods -n {} --no-headers 2>/dev/null | head -20' --height=40%) || return
-  kubectl config set-context --current --namespace="$ns"
+
+fgbr() {
+  local branch
+  branch=$(git branch --sort=-committerdate --format='%(refname:short)' 2>/dev/null |
+    fzf --prompt="branch> " \
+        --preview='git log --oneline --graph --color=always -15 {}' \
+        --height=40%) || return
+  git switch "$branch"
 }
+
+fps() {
+  local pid
+  pid=$(ps -u "$USER" -o pid,ppid,%cpu,%mem,etime,comm --sort=-%cpu |
+    fzf --header-lines=1 \
+        --prompt="process> " \
+        --preview='ps -p {1} -o pid,ppid,user,%cpu,%mem,start,etime,command --no-headers -ww' \
+        --preview-window=wrap,75% \
+        --height=50% \
+        --bind='shift-delete:execute-silent(kill -9 {1})+reload(ps -u "$USER" -o pid,ppid,%cpu,%mem,etime,comm --sort=-%cpu)') || return
+  kill -9 "$pid"
+}
+
+fport() {
+  local line pid
+  line=$(ss -tulnp 2>/dev/null |
+    fzf --header-lines=1 \
+        --prompt="port> " \
+        --preview='pid=$(echo {} | grep -oP "pid=\K[0-9]+" | head -1)
+                   if [ -n "$pid" ]; then
+                     ps -p $pid -o pid,user,%cpu,%mem,etime,args -ww
+                     echo ""
+                     echo "── process tree ──"
+                     pstree -p $pid 2>/dev/null
+                   else
+                     echo "no pid visible (try: sudo fport)"
+                   fi' \
+        --preview-window=wrap,50% \
+        --height=50% \
+        --bind='shift-delete:execute-silent(echo {} | grep -oP "pid=\K[0-9]+" | head -1 | xargs -r kill -9)+reload(ss -tulnp 2>/dev/null | tail -n +2)') || return
+  pid=$(echo "$line" | grep -oP 'pid=\K[0-9]+' | head -1)
+  [[ -n "$pid" ]] && echo "Port $(echo "$line" | awk '{print $5}') → PID $pid"
+}
+
+faz() {
+  local sub
+  sub=$(az account list --query '[].{id:id, name:name, state:state}' -o tsv 2>/dev/null |
+    awk -F'\t' '{print $1 " - " $2 "\t" $1}' |
+    fzf --prompt="subscription> " \
+        --delimiter=$'\t' \
+        --with-nth=1 \
+        --preview='az account show --subscription {2} --query "{Name:name, TenantDefaultDomain:tenantDefaultDomain, TenantDisplayName:tenantDisplayName, TenantId:tenantId}" -o table 2>/dev/null' \
+        --preview-window=down:6:wrap \
+        --height=40%) || return
+  local id=$(echo "$sub" | awk -F'\t' '{print $2}')
+  az account set --subscription "$id" && echo "Switched → $(echo "$sub" | awk -F'\t' '{print $1}')"
+}
+
+fenv() {
+  local line
+  line=$(env | sort |
+    fzf --prompt="env> " \
+        --delimiter='=' \
+        --preview='echo {} | cut -d= -f2- | tr ":" "\n"' \
+        --preview-window=down:5:wrap \
+        --height=50%) || return
+  echo "$line"
+}
+
+fglog() {
+  local sha
+  sha=$(git log --oneline --graph --color=always --date=short \
+        --format='%C(auto)%h %C(green)%ad %C(blue)%an%C(auto)%d %s' 2>/dev/null |
+    fzf --ansi --no-sort \
+        --prompt="log> " \
+        --preview='sha=$(echo {} | grep -oE "[a-f0-9]{7,}" | head -1)
+                   echo "── changed files ──"
+                   git diff-tree --no-commit-id --name-status -r $sha 2>/dev/null
+                   echo ""
+                   echo "── diff ──"
+                   git show --stat --color=always $sha 2>/dev/null
+                   echo ""
+                   git diff $sha^..$sha --color=always 2>/dev/null' \
+        --preview-window=right:60%:wrap \
+        --height=80% \
+        --bind='ctrl-y:execute-silent(echo {} | grep -oE "[a-f0-9]{7,}" | head -1 | tr -d "\n" | xclip -selection clipboard)') || return
+  echo "$sha" | grep -oE '[a-f0-9]{7,}' | head -1
+}
+
+fgstash() {
+  local stash
+  stash=$(git stash list 2>/dev/null |
+    fzf --prompt="stash> " \
+        --preview='s=$(echo {} | cut -d: -f1)
+                   echo "── files ──"
+                   git stash show --name-status $s 2>/dev/null
+                   echo ""
+                   echo "── diff ──"
+                   git stash show -p --color=always $s 2>/dev/null' \
+        --preview-window=right:65%:wrap \
+        --height=70% \
+        --bind='ctrl-d:execute-silent(git stash drop $(echo {} | cut -d: -f1))+reload(git stash list)') || return
+  local target=$(echo "$stash" | cut -d: -f1)
+  [[ -n "$target" ]] && git stash apply "$target"
+}
+
+fz() {
+  local -A cmds=(
+    ["fgbr    Switch git branch"]="fgbr"
+    ["fglog   Browse git log & diff"]="fglog"
+    ["fgstash Browse git stashes & diff"]="fgstash"
+    ["fps     List running process"]="fps"
+    ["fport   Show listening ports & kill"]="fport"
+    ["faz     Switch Azure subscription"]="faz"
+    ["fenv    Browse environment variables"]="fenv"
+    ["fkenv   Switch kubeconfig"]="fkenv"
+  )
+  local pick
+  pick=$(printf '%s\n' "${(@k)cmds}" | sort |
+    fzf --prompt="fz> " \
+        --height=40% \
+        --no-preview) || return
+  eval "${cmds[$pick]}"
+}
+
+fz-widget() {
+  zle -I
+  fz
+  zle reset-prompt
+}
+zle -N fz-widget
+bindkey '\ez' fz-widget
 
 export PATH="$HOME/.pyenv/shims:$PATH"
 export KUBECONFIG=$(find ~/.kube -maxdepth 1 -name '*.kubeconfig' | paste -sd:)
@@ -255,7 +339,7 @@ if [ $commands[k] ]; then
   compdef _kubectl k
 fi
 
+source ${HOME}/.dotfiles/zsh/.config/zsh/pi-enmaas-key.sh
 
-[ -f "/home/ykulkarn/.config/claude-code-vertex/env.sh" ] && . "/home/ykulkarn/.config/claude-code-vertex/env.sh"
 # zprof
 
