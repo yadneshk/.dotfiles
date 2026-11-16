@@ -1,3 +1,4 @@
 zsh/.config/zsh/.zcompdump*
 tmux/.config/tmux/plugins/*
 zsh/.config/zsh/.azure_credentials.sh
+zsh/.config/zsh/pi-enmaas-key.sh
